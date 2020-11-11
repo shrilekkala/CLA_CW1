@@ -2,11 +2,10 @@ from numpy import *
 from cla_utils import *
 
 A = load('values.npy')
-x = 5
+
 # compute the QR factorisation of A using the modified Gram-Schmidt algorithm
-def get_QR():
-    return GS_modified(A)
+Q,R =  GS_modified(A)
 
-Q,R = get_QR()
-
- 
+# investigate the orthogonality of Q
+err = Q.T @ Q - np.eye(Q.shape[1])
+print(np.linalg.norm(err))
