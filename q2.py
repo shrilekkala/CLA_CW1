@@ -59,3 +59,16 @@ def plot_ls_poly(m, x, f):
 
 plot_ls_poly(11, x, f)
 plot_ls_poly(7, x, f)
+
+# generate a small random vector of the same length as f using the multivariate normal distribution
+def pert(f):
+
+    df = np.random.multivariate_normal(np.zeros(len(f)),eye(len(f))/10)
+    return df
+
+# Investigate the sensitivity of the 2 polynomials above under the small random perturbations
+for i in range(3):
+    plot_ls_poly(11, x, f + pert(f))
+
+for i in range(3):
+    plot_ls_poly(7, x, f + pert(f))
