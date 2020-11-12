@@ -7,18 +7,15 @@ x = arange(-1,1.1,0.2)
 f = 0.0*x
 f[3:6] = 1
 
-# construct a linear system given m
-def linear_system(m):
+# construct the linear system given m, x
+def linear_system(m, x):
 
     # construct matrix A
     A = np.ones((11,m))
     for i in range (1,m):
         A[:,i] = x**i
 
-    # construct vector b
-    b = f.copy()
-
-    return(A,b)
+    return(A)
 
 # Solve the least squares system using the QR method
 def least_squares(A,b):
@@ -43,19 +40,22 @@ def Vandermonde(m):
 # generate evenly distributed values from -1 to 1
 x_vals = np.arange(-1,1.00,0.02)
 
-    
-m=11
+# function that plots the least squares polynomial for the data given an m, x and f
+def plot_ls_poly(m, x, f):
 
-A,b = linear_system(m)
-coef = least_squares(A,b)
+    A = linear_system(m,x)
+    coef = least_squares(A,f)
 
-# generate the y values to be plotted using the least squares polynomial
-y_vals = Vandermonde(m) @ coef
+    # generate the y values to be plotted using the least squares polynomial
+    y_vals = Vandermonde(m) @ coef
 
-# plot of original data
-plt.plot(x,f) 
+    # plot of original data
+    plt.plot(x,f) 
 
-# plot of the  polynomial resulting from  least squares
-plt.plot(x_vals,y_vals) 
+    # plot of the  polynomial resulting from  least squares
+    plt.plot(x_vals,y_vals) 
 
-plt.show()
+    plt.show()
+
+plot_ls_poly(11, x, f)
+plot_ls_poly(7, x, f)
