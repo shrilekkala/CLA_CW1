@@ -1,6 +1,6 @@
 from numpy import *
 from cla_utils import *
-from scipy import linalg_solve_triangular
+import scipy
 from matplotlib import pyplot as plt 
 
 x = arange(-1,1.1,0.2)
@@ -31,13 +31,31 @@ def least_squares(A,b):
 
     return coefficients
 
-A,b = linear_system(10)
+# Construct a Vandermonde matrix so the least squares polynomial curve can be plotted
+def Vandermonde(m):
+
+    V = np.ones((100,m))
+    for i in range (1,m):
+        V[:,i] = x_vals**i
+    
+    return V
+
+# generate evenly distributed values from -1 to 1
+x_vals = np.arange(-1,1.00,0.02)
+
+    
+m=11
+
+A,b = linear_system(m)
 coef = least_squares(A,b)
-f_ls = A @ coef
+
+# generate the y values to be plotted using the least squares polynomial
+y_vals = Vandermonde(m) @ coef
 
 # plot of original data
 plt.plot(x,f) 
 
-# plot of the resulting polynomial using least squares
-plt.plot(x,f_ls) 
+# plot of the  polynomial resulting from  least squares
+plt.plot(x_vals,y_vals) 
+
 plt.show()
