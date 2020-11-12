@@ -27,9 +27,9 @@ def least_squares(A,b):
     Q, R = GS_modified(A)
     
     # solve for x using back substitution
-    x_ls = scipy.linalg.solve_triangular(R, Q.T @ b)
+    coefficients = scipy.linalg.solve_triangular(R, Q.T @ b)
 
-    return x
+    return coefficients
 
 A,b = linear_system(10)
 coef = least_squares(A,b)
@@ -40,3 +40,4 @@ plt.plot(x,f)
 
 # plot of the resulting polynomial using least squares
 plt.plot(x,f_ls) 
+plt.show()
