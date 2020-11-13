@@ -1,4 +1,4 @@
-from numpy import *
+import numpy as np
 from cla_utils import *
 import matplotlib.pyplot
 
