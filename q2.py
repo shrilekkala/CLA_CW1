@@ -11,8 +11,8 @@ f[3:6] = 1
 def linear_system(m, x):
 
     # construct matrix A
-    A = np.ones((11,m))
-    for i in range (1,m):
+    A = np.ones((11,m+1))
+    for i in range (1,m+1):
         A[:,i] = x**i
 
     return(A)
@@ -31,16 +31,16 @@ def least_squares(A,b):
 # Construct a Vandermonde matrix so the least squares polynomial curve can be plotted
 def Vandermonde(m):
 
-    V = np.ones((100,m))
-    for i in range (1,m):
-        V[:,i] = x_vals**i
+    V = np.ones((100,m+1))
+    for i in range (1,m+1):
+        V[:,i] = x_vals ** i
     
     return V
 
 # generate evenly distributed values from -1 to 1
-x_vals = np.arange(-1,1.00,0.02)
+x_vals = np.arange(-1,1,0.02)
 
-# function that plots the least squares polynomial for the data given an m, x and f
+# function generates the plots of the least squares polynomial for the data given an m, x and f
 def plot_ls_poly(m, x, f):
 
     A = linear_system(m,x)
@@ -50,25 +50,28 @@ def plot_ls_poly(m, x, f):
     y_vals = Vandermonde(m) @ coef
 
     # plot of original data
-    plt.plot(x,f) 
+    #plt.plot(x,f) 
 
     # plot of the  polynomial resulting from  least squares
     plt.plot(x_vals,y_vals) 
 
-    plt.show()
 
-plot_ls_poly(11, x, f)
+plot_ls_poly(10, x, f)
+plt.show()
 plot_ls_poly(7, x, f)
+plt.show()
 
 # generate a small random vector of the same length as f using the multivariate normal distribution
 def pert(f):
 
-    df = np.random.multivariate_normal(np.zeros(len(f)),eye(len(f))/10)
+    df = np.random.multivariate_normal(np.zeros(len(f)),eye(len(f))/100)
     return df
 
 # Investigate the sensitivity of the 2 polynomials above under the small random perturbations
-for i in range(3):
-    plot_ls_poly(11, x, f + pert(f))
+for i in range(10):
+    plot_ls_poly(10, x, f + pert(f))
+plt.show()
 
-for i in range(3):
+for i in range(10):
     plot_ls_poly(7, x, f + pert(f))
+plt.show()
