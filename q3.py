@@ -2,10 +2,10 @@ import numpy as np
 from cla_utils import *
 from matplotlib import pyplot as plt 
 
-# function that generates the required Vandermonde matrix given p
+# function that generates the required Vandermonde matrix given p (up to degree p)
 def Vand(p):
 
-    V = np.vander(x, p)
+    V = np.vander(x, p+1)
     V = np.flip(V, axis = 1)
 
     return V
@@ -29,13 +29,14 @@ p = 5
 Q, R = householder_qr(Vand(p))
 
 plt.title("Plot of Data x against Columns of Q (Householder)")
+plt.plot(x, Q[:,0], label = "Col." + str(0))
 plot_col_q(Q)
-plt.legend(fontsize=8, loc='upper left')
+#plt.legend(fontsize=8, loc='upper left')
 plt.show()
 
 
 # Invesigate QR factorisation for a large p
-p = 50
+p = 5
 
 # Householder
 Qh, Rh = householder_qr(Vand(p))
