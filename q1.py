@@ -1,8 +1,8 @@
 import numpy as np
 from cla_utils import *
-import matplotlib.pyplot
+from matplotlib import pyplot as plt 
 
-A = load('values.npy')
+A = np.load('values.npy')
 
 # compute the QR factorisation of A using the modified Gram-Schmidt algorithm
 Q,R =  GS_modified(A)
@@ -12,8 +12,8 @@ err = Q.T @ Q - np.eye(Q.shape[1])
 print(np.linalg.norm(err))
 
 # investigate the diagonal components of R
-matplotlib.pyplot.semilogy(R.diagonal(0))
-matplotlib.pyplot.show()
+plt.semilogy(R.diagonal(0))
+plt.show()
 
 # check the condition number of A
 print(np.linalg.cond(A))
