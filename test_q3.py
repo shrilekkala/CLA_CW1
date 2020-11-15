@@ -9,7 +9,7 @@ import numpy as np
 # import variables from q1.py
 Q = q3.Q
 R = q3.R
-V = q3.V
+V = q3.Vand(5)
 
 ### test the accuracy of the householder QR factorisation ###
 def test_QR_accuracy():

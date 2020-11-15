@@ -3,7 +3,7 @@ from cla_utils import *
 import scipy
 from matplotlib import pyplot as plt 
 
-x = arange(-1,1.1,0.2)
+x = np.arange(-1,1.1,0.2)
 f = 0.0*x
 f[3:6] = 1
 
@@ -55,7 +55,7 @@ def plot_ls_poly(m, x, f):
 # generate a small random vector of the same length as f using the multivariate normal distribution
 def pert(f):
 
-    df = np.random.multivariate_normal(np.zeros(len(f)),eye(len(f))/100)
+    df = np.random.multivariate_normal(np.zeros(len(f)),np.eye(len(f))/100)
     return df
 
 
