@@ -33,17 +33,17 @@ def generate_mats_1(p):
 
 
 # function that generates the piecwise least squares polynomial
-def piecewise_poly(p,q):
+def piecewise_poly(p, M, q):
     if q == 1:
         A, B, b, d = generate_mats_1(p)
     else:
-        A, B, b, d = generate_mats_2(p)
+        A, B, b, d = generate_mats_2(p, M)
 
     # number of rows of B (so we can extend this function for use in part d)
     k = np.shape(B)[0]
 
     # obtain the full QR of B^T
-    Qb, Rb = householder_full_qr(B.T)
+    Qb, Rb = np.linalg.qr(B.T, mode = 'complete')
     Rb = Rb[:k,:k]
 
     # solve for y_1 by back substitution
@@ -53,7 +53,7 @@ def piecewise_poly(p,q):
     A2 = A @ Qb[:, k:]
 
     # obtain the reduced QR of A2
-    Qa2, Ra2 = householder_qr(A2)
+    Qa2, Ra2 = np.linalg.qr(A2)
 
     # solve the least squares model for y_2
     y2 = scipy.linalg.solve_triangular(Ra2, Qa2.T @ (b - A1 @ y1))
@@ -68,33 +68,33 @@ def piecewise_poly(p,q):
 
     return x
 
-plt.scatter(data[:,0] ,data[:,1], c="r", marker='x', label = "Observed Data") 
+plt.scatter(data[:,0] ,data[:,1], c="r", marker='x', label = "Observed Data") ###
 
 # generate evenly distributed values from 0 to 2
 x_vals = np.arange(0,2.02,0.01)
 
 p = 10
-x = piecewise_poly(p,1)
+x = piecewise_poly(p, 2, 1)
 
 y_vals = x_vals.copy()[:, np.newaxis]
 y_vals[:101] = Vand(x_vals[:101], p+1) @ x[:p+1]
 y_vals[101:] = Vand(x_vals[101:], p+1) @ x[p+1:]
-plt.plot(x_vals[:101], y_vals[:101])
-plt.plot(x_vals[100:], y_vals[100:])
+plt.plot(x_vals[:101], y_vals[:101]) ###
+plt.plot(x_vals[100:], y_vals[100:]) ###
 
-# plt.show() ###################################################
+plt.show() ###################################################
 
 
 RSS_mat = np.zeros(20)
 
 for i in range(1,21):
-    A = generate_mats(i)[0]
-    x = piecewise_poly(i)
+    A = generate_mats_1(i)[0]
+    x = piecewise_poly(i, 2, 1)
     RSS = np.sum ((A @ x - data[:,1][:, np.newaxis]) ** 2)
     RSS_mat[i-1] = RSS
 
-plt.semilogy(range(1,21), RSS_mat)
-# plt.show() ###################################################
+plt.semilogy(range(1,21), RSS_mat) ###
+plt.show() ###################################################
 
 
 """
@@ -108,22 +108,23 @@ def ellipse_with_noise(n, a, b):
     theta_i = np.sort(np.random.uniform(0,2*np.pi,(n)))
 
     # generate an ellipse with random noise using the theta values
-    x_i = 5 + a * np.cos(theta_i) + np.random.multivariate_normal(np.zeros(n),np.eye(n)/5)
-    y_i = 3 + b * np.sin(theta_i) + np.random.multivariate_normal(np.zeros(n),np.eye(n)/5)
+    x_i = 5 + a * np.cos(theta_i) + np.random.multivariate_normal(np.zeros(n),np.eye(n)/1)
+    y_i = 3 + b * np.sin(theta_i) + np.random.multivariate_normal(np.zeros(n),np.eye(n)/1)
         
     return theta_i, x_i, y_i
 
-theta_i, x_i, y_i = ellipse_with_noise(100,20,10)
+a = 20
+b = 10
+theta_i, x_i, y_i = ellipse_with_noise(250,a,b)
 
 plt.scatter(x_i,y_i, c="r", marker='x', label = "Ellipse") 
-# plt.show() ###################################################
 
 # Fix M and p
 M = 10
 p = 5
 
 # construct the required matrix A given theta values
-def construct_A2(theta_i):
+def construct_A2(theta_i, M):
     A_mats = list()
     for m in range(M):
         # Obtain the index of theta values that are between 2*m*pi/M and 2*(m+1)*pi/M
@@ -141,38 +142,48 @@ def construct_A2(theta_i):
     return A
 
 # construct the required matrix B given theta values
-def construct_B2():
+def construct_B2(M):
     # generate matrix B
     B = np.zeros((2*M,M*(p+1)))
     for i in range(M-1):
         # continuity
-        B[i,i*(p+1):(i+1)*(p+1)] = np.array([1 * (2*np.pi*(i+1) / M)**i for i in range(p+1)])
+        B[i,i*(p+1):(i+1)*(p+1)] = np.array([1 * (2*np.pi*(i+1) / M)**j for j in range(p+1)])
         B[i,(i+1)*(p+1):(i+2)*(p+1)] = - B[i,i*(p+1):(i+1)*(p+1)]
-                                                
+                                            
         # continuity of derivatives
-        B[i+M,i*(p+1):(i+1)*(p+1)] = np.multiply(np.array([1 * (2*np.pi*(i+1) / M)**(i-1) for i in range(p+1)]), np.arange(p+1))
+        B[i+M,i*(p+1):(i+1)*(p+1)] = np.multiply(np.array([1 * (2*np.pi*(i+1) / M)**(j-1) for j in range(p+1)]), np.arange(p+1))
         B[i+M,(i+1)*(p+1):(i+2)*(p+1)] = - B[i+M,i*(p+1):(i+1)*(p+1)]
 
-    # edge case for continuity
-    B[M-1,(M-1)*(p+1):M*(p+1)] = np.array([1 * (2*np.pi)**i for i in range(p+1)])
+    # edge case
+    B[M-1,(M-1)*(p+1):M*(p+1)] = np.array([1 * (2*np.pi)**j for j in range(p+1)])
     B[M-1, 0] = -1
 
     # edge case for derivatives
-    B[2*M-1,(M-1)*(p+1):M*(p+1)] = np.multiply(np.array([1 * (2*np.pi)**(i-1) for i in range(p+1)]), np.arange(p+1))
+    B[2*M-1,(M-1)*(p+1):M*(p+1)] = np.multiply(np.array([1 * (2*np.pi)**(j-1) for j in range(p+1)]), np.arange(p+1))
     B[2*M-1, 1] = -1
 
     return B
 
-def generate_mats_2(p):
-    A = construct_A2(theta_i)
-    B = construct_B2()
+def generate_mats_2(p, M):
+    A = construct_A2(theta_i, M)
+    B = construct_B2(M)
 
     # generate matrix b
     b = np.concatenate((x_i[:, np.newaxis],y_i[:, np.newaxis]), axis=1)
 
     # generate matrix d
     d = np.zeros((2*M, 2))
-    
+
     return A, B, b, d
 
+# generate evenly distributed theta values from 0 to 2 pi
+theta_vals=np.linspace(0,2*np.pi,500)
+
+
+x = piecewise_poly(p, M, 2)
+print(np.linalg.norm(generate_mats_2(p, M)[0] @ x - generate_mats_2(p, M)[2]))
+
+xy_vals = construct_A2(theta_vals, M) @ x
+plt.plot(xy_vals[:,0], xy_vals[:,1])
+plt.show()
 
