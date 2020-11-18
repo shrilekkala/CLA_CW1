@@ -12,14 +12,14 @@ def Vandermonde(m, x):
     Given a polynomial degree m and an array pf points x,
     construct the Vandermonde matrix V for use in the linear system Vx = b
 
-    :return A: the matrix A in the linear system
+    :return V: the matrix V in the linear system
     """
     # construct Vandermonde Matrix A
-    A = np.ones((x.shape[0],m+1))
+    V = np.ones((x.shape[0],m+1))
     for i in range (1,m+1):
-        A[:,i] = x**i
+        V[:,i] = x**i
 
-    return(A)
+    return(V)
 
 def least_squares(A,b):
     """
@@ -86,10 +86,14 @@ def pert_sensitivity(m, n):
 # generate evenly distributed values from -1 to 1 to be used for plotting
 x_vals = np.arange(-1,1.02,0.02)
 
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 """ Question 2c) """
 
 # plot the original data
 plt.scatter(x,f, c="r", marker='x', label = "Observed Data") 
+
 # plot the least squares solution where m = 10
 plot_ls_poly(10, x, f)
 plt.title("Least squares polynomial of degree 10 for the data")
@@ -99,20 +103,24 @@ plt.show()
 """ Question 2d) """
 
 plt.title("Least squares polynomials of degree 10 for the randomly perturbed data")
+
 # plot the original data
 plt.scatter(x,f, c="r", marker='x', label = "Observed Data") 
+
 # plot the least squares solution where for each random perturbation
 for i in range(10):
     plot_ls_poly(10, x, f + pert(f))
 plt.show()
 
 # print the sum of squared differences for each perturbation
+print("(p = 10) The array of SSDs for each perturbation is:")
 print(pert_sensitivity(10, 15))
 
 """ Question 2e) """
 
 # plot the original data
 plt.scatter(x,f, c="r", marker='x', label = "Observed Data") 
+
 # plot the least squares solution where m = 7
 plot_ls_poly(7, x, f)
 plt.title("Least squares polynomial of degree 7 for the data")
@@ -122,12 +130,15 @@ plt.show()
 """  Question 2f) """
 
 plt.title("Least squares polynomials of degree 7 for the randomly perturbed data")
+
 # plot the original data
 plt.scatter(x,f, c="r", marker='x', label = "Observed Data") 
+
 # plot the least squares solution where for each random perturbation
 for i in range(10):
     plot_ls_poly(7, x, f + pert(f))
 plt.show()
 
 # print the sum of squared differences for each perturbation
+print("(p = 7) The array of SSDs for each perturbation is:")
 print(pert_sensitivity(7, 15))

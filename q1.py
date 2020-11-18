@@ -4,6 +4,9 @@ from matplotlib import pyplot as plt
 
 A = np.load('values.npy')
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
 """ Question 1a) """
 
 # compute the QR factorisation of A using the modified Gram-Schmidt algorithm from 
@@ -22,10 +25,10 @@ plt.xlabel("n")
 plt.ylabel("n'th component of diagonal of R")
 plt.show()
 
-# plot the columns of R
-plt.title("Plot of the columns of R")
+# plot the rows of R
+plt.title("Plot of the rows of R")
 for i in range(100):
-    plt.plot(R[:,i])
+    plt.plot(R[i,:])
 plt.xlabel("n")
 plt.ylabel("n'th element of a column of R")
 plt.show()
