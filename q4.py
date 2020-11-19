@@ -227,8 +227,8 @@ for i in range(1,21):
 # plot the RSS against different values of p
 plt.semilogy(range(1,21), RSS_mat)
 plt.title("Semilog plot of the RSS against polynomial degree")
-plt.xlabel("RSS")
-plt.ylabel("p (polynomial degree)")
+plt.xlabel("p (polynomial degree)")
+plt.ylabel("RSS")
 plt.show()
 
 
