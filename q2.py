@@ -52,6 +52,8 @@ def plot_ls_poly(m, x, f):
 
     # plot of the  polynomial resulting from  least squares
     plt.plot(x_vals,y_vals, zorder=0, label = "Least Squares model")
+    plt.xlabel("x")
+    plt.ylabel("f")
 
 def pert(f):
     """
