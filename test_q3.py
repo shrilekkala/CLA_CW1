@@ -18,12 +18,14 @@ def test_QR_accuracy():
     err = V - Q@R
     assert(np.linalg.norm(err) < 1.0e-6)
 
+
 ''' 
 Test the orthogonality of the Q from the Householder QR factorisation
 '''
 def test_QR_orthogonality():
     err = np.eye(Q.shape[1]) - Q.T @ Q
     assert(np.linalg.norm(err) < 1.0e-6)
+
 
 ''' 
 Test that the R matrix is upper triangular to a threshold of 1.0x10^-6
