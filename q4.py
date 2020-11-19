@@ -244,7 +244,7 @@ plt.scatter(x_i,y_i, c="r", marker='x', label = "Ellipse")
 plt.xlabel("x")
 plt.ylabel("y")
 
-# Fix M (number of intervals) and p (degree of polynomial)
+# adjust parameter values of M (number of intervals) and p (degree of polynomial)
 M = 10
 p = 5
 
