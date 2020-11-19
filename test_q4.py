@@ -9,7 +9,7 @@ data = q4.data
 
 
 ''' 
-Test the accuracy of the Least Squares Polynomial in 4c) to a specified tolerance'
+Test the accuracy of the Least Squares Polynomial in 4c) to a specified tolerance
 using RSS (Residual sum of squares)
 '''
 @pytest.mark.parametrize('p, tol_lower, tol_upper', [(3,1,10), (5,1,10), (10,1,10)])
@@ -23,7 +23,7 @@ def test_LS_accuracy_4c(p, tol_lower, tol_upper):
 
 
 ''' 
-Test the accuracy of the Least Squares Polynomial for various closed curves in 4d) to a specified tolerance'
+Test the accuracy of the Least Squares Polynomial for various closed curves in 4d) to a specified tolerance
 using RSS (Residual sum of squares)
 '''
 @pytest.mark.parametrize('M, p, a, b', [(5, 6, 20, 50), (10, 3, 60, 10), (2, 9, 25, 25)])

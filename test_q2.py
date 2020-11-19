@@ -10,7 +10,7 @@ f = q2.f
 
 
 ''' 
-Test the accuracy of the Least Squares Polynomial to a specified tolerance'
+Test the accuracy of the Least Squares Polynomial to a specified tolerance
 using RSS (Residual sum of squares)
 '''
 @pytest.mark.parametrize('m, tol', [(10, 1e-06), (10,1), (7, 1e-06), (7,1)])

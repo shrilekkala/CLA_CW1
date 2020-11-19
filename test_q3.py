@@ -13,7 +13,6 @@ V = q3.Vand(5)
 ''' 
 Test the accuracy of the Householder QR factorisation
 '''
-### test the accuracy of the householder QR factorisation ###
 def test_QR_accuracy():
     err = V - Q@R
     assert(np.linalg.norm(err) < 1.0e-6)
