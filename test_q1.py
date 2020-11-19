@@ -16,12 +16,14 @@ def test_QR_accuracy():
     err = A - Q@R
     assert(np.linalg.norm(err) < 1.0e-6)
 
+
 ''' 
 Test for the orthogonality of the Q matrix
 '''
 def test_QR_orthogonality():
     err = np.eye(Q.shape[1]) - Q.T @ Q
     assert(np.linalg.norm(err) < 1.0e-6)
+
 
 ''' 
 Test that the R matrix is upper triangular to a threshold of 1.0x10^-6
