@@ -55,7 +55,7 @@ plt.show()
 """ Question 3b) """
 
 # Invesigate QR factorisation for a large p
-p = 50
+p = 100
 
 # Householder
 Qh, Rh = householder_qr(Vand(p))
