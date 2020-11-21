@@ -35,3 +35,8 @@ def test_LS_accuracy_4d(M, p, a, b):
 
     err = np.linalg.norm(A @ x - b)
     assert(err < 50)
+
+
+if __name__ == '__main__':
+    import sys
+    pytest.main(sys.argv)

@@ -21,3 +21,8 @@ def test_LS_accuracy(m, tol):
 
     RSS = np.sum ((A @ coef - f) ** 2)
     assert(RSS < tol)
+
+
+if __name__ == '__main__':
+    import sys
+    pytest.main(sys.argv)

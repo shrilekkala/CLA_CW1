@@ -30,3 +30,8 @@ Test that the R matrix is upper triangular to a threshold of 1.0x10^-6
 '''
 def test_R_triangular():
     assert(np.allclose(np.triu(R), R, 1.0e-6))
+
+
+if __name__ == '__main__':
+    import sys
+    pytest.main(sys.argv)
